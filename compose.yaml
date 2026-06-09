@@ -34,7 +34,7 @@ services:
     volumes:
       - xandikos-data:/data
     ports:
-      - "8000:8000"
+      - "0.0.0.0:8000:8000"
 
   # The sync-engine REST API (§9.1). Run `make build` first, then
   # `docker compose up -d engine`. Reaches Xandikos by service name.
@@ -54,7 +54,7 @@ services:
       - TODOMD_GIT=1
       - PORT=8787
     ports:
-      - "8787:8787"
+      - "0.0.0.0:8787:8787"
     depends_on:
       - xandikos
 
@@ -69,7 +69,7 @@ services:
     environment:
       - ENGINE_URL=http://engine:8787
     ports:
-      - "5173:5173"
+      - "0.0.0.0:5173:5173"
     depends_on:
       - engine
 
