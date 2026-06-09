@@ -60,4 +60,23 @@ describe.skipIf(!baseUrl)('bidirectional sync against Xandikos', () => {
     expect(again.pushed.updated).toEqual([]);
     expect(again.pushed.deleted).toEqual([]);
   });
+
+  it('imports a foreign calendar event (non-todomd UID) as a task, without duplicating', async () => {
+    const cal = `/user/calendars/bidi-foreign-${Date.now()}/`;
+    const seed = await syncBidirectional('', emptyState(), cfg, { calendarPath: cal });
+
+    // An event created directly in the calendar (e.g. from Samsung Calendar).
+    const ics =
+      'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:foreign-xyz-123\r\n' +
+      'DTSTAMP:20200101T000000Z\r\nSUMMARY:Samsung Event\r\n' +
+      'DTSTART;VALUE=DATE:20260614\r\nDTEND;VALUE=DATE:20260615\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n';
+    await putResource(cfg, `${cal}foreign-xyz-123.ics`, ics);
+
+    const out = await syncBidirectional(seed.markdown, seed.state, cfg, { calendarPath: cal });
+    expect(out.markdown).toContain('Samsung Event');
+    expect(out.pushed.created).toEqual([]); // imported, not pushed back
+
+    const out2 = await syncBidirectional(out.markdown, out.state, cfg, { calendarPath: cal });
+    expect((out2.markdown.match(/Samsung Event/g) ?? []).length).toBe(1);
+  });
 });

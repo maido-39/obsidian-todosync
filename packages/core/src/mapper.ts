@@ -23,6 +23,8 @@ export interface ICalOptions {
   /** Duration in minutes for a timed VEVENT's DTEND (default 60). */
   defaultDurationMinutes?: number;
   prodId?: string;
+  /** Override the UID (e.g. to preserve a foreign event's original UID). */
+  uid?: string;
 }
 
 const CRLF = '\r\n';
@@ -41,7 +43,7 @@ export function taskToICal(task: TaskBlock, opts: ICalOptions = {}): string {
   }
   const timezone = opts.timezone ?? 'UTC';
   const ctx = {
-    uid: `todomd-${task.id}@${opts.host ?? 'todomd.local'}`,
+    uid: opts.uid ?? `todomd-${task.id}@${opts.host ?? 'todomd.local'}`,
     dtstamp: utcStamp(opts.dtstamp ?? '2020-01-01T00:00'),
     timezone,
     durationMin: opts.defaultDurationMinutes ?? 60,

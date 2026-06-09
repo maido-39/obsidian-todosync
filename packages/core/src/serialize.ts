@@ -76,8 +76,10 @@ export function serializeTaskLine(task: TaskBlock): string {
 
   let line = parts.join(' ');
   if (task.notes && task.notes.length > 0) {
+    // A blank line keeps plain-text notes a separate paragraph in the list item;
+    // without it they lazily merge into the title line and corrupt it on re-parse.
     const noteLines = task.notes.split('\n').map((l) => (l.length > 0 ? `    ${l}` : l));
-    line += `\n${noteLines.join('\n')}`;
+    line += `\n\n${noteLines.join('\n')}`;
   }
   return line;
 }

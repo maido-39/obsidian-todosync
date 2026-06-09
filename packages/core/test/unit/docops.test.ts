@@ -6,6 +6,7 @@ import {
   serializeDocument,
   updateTask,
 } from '@todomd/core';
+import type { TaskBlock } from '@todomd/shared-types';
 import { describe, expect, it } from 'vitest';
 
 describe('addTask', () => {
@@ -45,6 +46,18 @@ describe('updateTask', () => {
 
   it('returns null for an unknown id', () => {
     expect(updateTask(parseDocument('- [ ] x ^aaa111\n'), 'zzz999', { title: 'y' })).toBeNull();
+  });
+
+  it('round-trips a re-rendered task with plain-text notes (no title corruption)', () => {
+    const doc = updateTask(parseDocument('## D\n\n- [ ] meeting 📅 2026-06-10 ^aaa111\n'), 'aaa111', {
+      notes: 'bring slides',
+    });
+    const re = parseDocument(serializeDocument(doc as NonNullable<typeof doc>));
+    const t = re.blocks.find((b) => b.kind === 'task') as TaskBlock;
+    expect(t.id).toBe('aaa111');
+    expect(t.title).toBe('meeting');
+    expect(t.due).toBe('2026-06-10');
+    expect(t.notes).toContain('bring slides');
   });
 });
 

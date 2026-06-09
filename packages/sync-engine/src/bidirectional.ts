@@ -1,5 +1,6 @@
 import {
   contentHash,
+  defaultIdGen,
   mergeBlocks,
   parseDocument,
   rebuildDocument,
@@ -56,17 +57,32 @@ export async function syncBidirectional(
   const calendarPath = opts.calendarPath.endsWith('/') ? opts.calendarPath : `${opts.calendarPath}/`;
   const host = opts.ical?.host ?? 'todomd.local';
 
-  // 1) Pull remote changes since the last token.
+  // 1) Pull remote changes since the last token. Resolve each resource to a
+  //    block id: a `todomd-…` UID maps to that id; a previously-imported href
+  //    maps to its existing id; anything else is a foreign event (created
+  //    directly in the calendar) and gets a fresh id so it imports as a task.
   const pull = await syncCollection(cfg, opts.calendarPath, state.syncToken);
+  const hrefToId = new Map<string, string>();
+  for (const [id, mapEntry] of Object.entries(state.blocks)) hrefToId.set(mapEntry.href, id);
+  const usedIds = new Set(Object.keys(state.blocks));
+  const gen = opts.idGen ?? defaultIdGen;
+
   const remoteByBlockId = new Map<string, ParsedICalTask>();
-  const pulledMeta = new Map<string, { href: string; etag: string }>();
+  const pulledMeta = new Map<string, { href: string; etag: string; uid: string }>();
   for (const res of pull.changed) {
     const ics = await getResource(cfg, res.href);
     if (!ics) continue;
     const parsed = parseICalTask(ics);
-    if (!parsed?.blockId) continue;
-    remoteByBlockId.set(parsed.blockId, parsed);
-    pulledMeta.set(parsed.blockId, { href: res.href, etag: res.etag });
+    if (!parsed) continue;
+    let blockId = parsed.blockId ?? hrefToId.get(res.href) ?? '';
+    if (!blockId) {
+      do {
+        blockId = gen();
+      } while (usedIds.has(blockId));
+      usedIds.add(blockId);
+    }
+    remoteByBlockId.set(blockId, parsed);
+    pulledMeta.set(blockId, { href: res.href, etag: res.etag, uid: parsed.uid });
   }
   const removedBlockIds = new Set<string>();
   for (const href of pull.removed) {
@@ -87,7 +103,7 @@ export async function syncBidirectional(
     remoteBlocks.push(parsed && isTask(b) ? remoteBlock(b, parsed) : b);
   }
   for (const [id, parsed] of remoteByBlockId) {
-    if (!baseById.has(id)) remoteBlocks.push(remoteBlock(null, parsed));
+    if (!baseById.has(id)) remoteBlocks.push(remoteBlock(null, parsed, id));
   }
 
   // 3) 3-way merge and reassemble.
@@ -100,8 +116,8 @@ export async function syncBidirectional(
   const conflictIds = new Set(merge.conflicts.map((c) => c.key));
   const nextBlocks: Record<string, MappingEntry> = {};
   const pushed = { created: [] as string[], updated: [] as string[], deleted: [] as string[] };
-  const entry = (id: string, etag: string, href: string, task: TaskBlock): MappingEntry => ({
-    uid: `todomd-${id}@${host}`,
+  const entry = (uid: string, etag: string, href: string, task: TaskBlock): MappingEntry => ({
+    uid,
     etag,
     href,
     lastSyncedHash: task.contentHash,
@@ -121,7 +137,7 @@ export async function syncBidirectional(
     }
     // Remote-originated and the merge kept the remote value → server is current.
     if (meta && remoteById.get(id)?.contentHash === task.contentHash) {
-      nextBlocks[id] = entry(id, meta.etag, meta.href, task);
+      nextBlocks[id] = entry(meta.uid, meta.etag, meta.href, task);
       continue;
     }
     // Unchanged since the last sync → nothing to push.
@@ -129,10 +145,11 @@ export async function syncBidirectional(
       nextBlocks[id] = { ...existing, lastSyncedHash: task.contentHash };
       continue;
     }
-    // Local-originated create/update → push.
+    // Local-originated create/update → push (preserving any foreign UID).
+    const uid = existing?.uid ?? meta?.uid ?? `todomd-${id}@${host}`;
     const href = meta?.href ?? existing?.href ?? `${calendarPath}todomd-${id}.ics`;
-    const etag = await putResource(cfg, href, taskToICal(task, opts.ical), existing?.etag);
-    nextBlocks[id] = entry(id, etag, href, task);
+    const etag = await putResource(cfg, href, taskToICal(task, { ...opts.ical, uid }), existing?.etag);
+    nextBlocks[id] = entry(uid, etag, href, task);
     (existing ? pushed.updated : pushed.created).push(id);
   }
 
@@ -153,10 +170,12 @@ export async function syncBidirectional(
 }
 
 /** Overlay a reverse-mapped calendar resource onto its base task (or create one). */
-function remoteBlock(base: TaskBlock | null, p: ParsedICalTask): TaskBlock {
+function remoteBlock(base: TaskBlock | null, p: ParsedICalTask, idOverride?: string): TaskBlock {
+  // Group an imported foreign event under its date (date-strategy sections).
+  const dateForSection = p.component === 'VEVENT' ? (p.start ?? p.due) : (p.due ?? p.start);
   const task: TaskBlock = {
     kind: 'task',
-    section: base?.section ?? null,
+    section: base?.section ?? (dateForSection ? dateForSection.slice(0, 10) : null),
     raw: '',
     contentHash: '',
     origin: base ? 'parsed' : 'created',
@@ -167,7 +186,7 @@ function remoteBlock(base: TaskBlock | null, p: ParsedICalTask): TaskBlock {
     priority: p.priority,
     tags: base?.tags ?? [],
   };
-  const id = base?.id ?? p.blockId;
+  const id = base?.id ?? p.blockId ?? idOverride;
   if (id) task.id = id;
 
   if (p.component === 'VEVENT') {
