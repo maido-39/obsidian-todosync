@@ -5,7 +5,7 @@ RUN := $(DC) run --rm dev
 
 .DEFAULT_GOAL := help
 
-.PHONY: help image install build test test-watch golden itest web web-build shots shell clean
+.PHONY: help image install build test test-watch golden itest up down web web-build shots shell clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
@@ -34,6 +34,18 @@ itest: ## Run integration tests against the live service stack (Xandikos)
 	@echo "waiting for xandikos to accept connections..."
 	@for i in $$(seq 1 60); do curl -sf http://localhost:8000/ >/dev/null 2>&1 && { echo "ready"; break; }; sleep 1; done
 	$(DC) run --rm -e XANDIKOS_URL=http://xandikos:8000 dev pnpm run test
+
+up: ## Start the whole app in the background (dashboard + engine + CalDAV)
+	$(DC) up -d --build xandikos engine web
+	@echo ""
+	@echo "  todomd is running:"
+	@echo "    dashboard  →  http://localhost:5173"
+	@echo "    engine API →  http://localhost:8787"
+	@echo "    CalDAV     →  http://localhost:8000  (Xandikos)"
+	@echo "  stop with: make down"
+
+down: ## Stop the app
+	$(DC) down
 
 web-build: ## Type-check & bundle the web dashboard
 	$(RUN) sh -lc 'cd packages/web-dashboard && pnpm run build'
