@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:18baa23de2577b8b7f176473025d319f798a505e281de296c6b9f22d82741b11",
+      "id": "sub001",
+      "title": "parent task",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "notes": "- [ ] child a\n- [ ] child b",
+      "hasSubtasks": true
+    }
+  ]
+}

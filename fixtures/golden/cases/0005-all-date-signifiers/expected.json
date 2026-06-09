@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:30947164dae2920a440b09446137e3363f7549c7bad065bad03cc6dc924fd944",
+      "id": "aabbcc",
+      "title": "every date field",
+      "done": true,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "due": "2026-01-01",
+      "scheduled": "2026-01-02",
+      "start": "2026-01-03",
+      "completedAt": "2026-01-04",
+      "cancelledAt": "2026-01-06",
+      "createdAt": "2026-01-05",
+      "dueHasTime": false,
+      "scheduledHasTime": false,
+      "startHasTime": false,
+      "completedAtHasTime": false,
+      "cancelledAtHasTime": false,
+      "createdAtHasTime": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Thin `docker compose` wrapper.
+#
+# It tolerates a *stale* `docker` group membership: when this login session
+# started before `usermod -aG docker $USER` ran, the session's group set does
+# not yet include `docker`, so the daemon socket is unreachable. `sg docker`
+# switches into a group you already belong to for a single command, which fixes
+# it without a re-login. After you log out and back in, the fallback becomes a
+# no-op (and stays harmless).
+set -euo pipefail
+
+if docker info >/dev/null 2>&1; then
+  exec docker compose "$@"
+fi
+
+# Re-quote args so they survive `sg docker -c '<single string>'`.
+quoted=""
+for a in "$@"; do
+  quoted+=" $(printf '%q' "$a")"
+done
+exec sg docker -c "docker compose${quoted}"

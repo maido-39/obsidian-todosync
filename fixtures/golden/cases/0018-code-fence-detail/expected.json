@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "memo",
+      "section": "P",
+      "contentHash": "sha256:0edfb3bb63f872d6ce5ede6a5334a6326c77ed6326b7bedb57fb3afb2627398d",
+      "text": "note with a code block:"
+    },
+    {
+      "kind": "detail",
+      "section": "P",
+      "contentHash": "sha256:b2c1a97bf415bf2f372381ffd2cb051afa4a48e69bf35a99892f0f46fac043c3",
+      "text": "```js\nconst x = 1;\n```"
+    }
+  ]
+}

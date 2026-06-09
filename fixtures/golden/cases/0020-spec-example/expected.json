@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "Asia/Seoul",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "2026-06-10",
+      "kind": "date"
+    },
+    {
+      "title": "2026-06-11",
+      "kind": "date"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:eb037f41fb8a21ecfcec3a73042a8bed670f2fc92a571a6aaf525e153f86c4e2",
+      "id": "a1b2c3",
+      "title": "보고서 제출",
+      "done": false,
+      "component": "VEVENT",
+      "priority": "high",
+      "tags": [
+        "#event",
+        "@회사"
+      ],
+      "due": "2026-06-10T14:00",
+      "dueHasTime": true,
+      "notes": "- 1차 초안 기준으로 제출. 검토자 김OO."
+    },
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:d3eb9ed764e4ba1c8e0f589edeff05c3baa56881536c4cd90d0c0f02c0c3770e",
+      "id": "d4e5f6",
+      "title": "헬스장",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "start": "2026-06-10",
+      "startHasTime": false,
+      "recurrence": {
+        "raw": "every weekday",
+        "rrule": "",
+        "whenDone": false
+      }
+    },
+    {
+      "kind": "memo",
+      "section": "2026-06-10",
+      "contentHash": "sha256:f3a39005b8c5a0e8190b4870bfe3450f9ba6388ad2080d649e58b28aed4b9780",
+      "id": "memo7",
+      "text": "오늘 회고: 오전 집중이 잘 됐다. 내일은 회의부터."
+    },
+    {
+      "kind": "task",
+      "section": "2026-06-11",
+      "contentHash": "sha256:83cf5fa0debbcea4c261f3c801d7c3f054de166d41133651343604e746779b26",
+      "id": "g7h8i9",
+      "title": "장보기",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "due": "2026-06-11",
+      "dueHasTime": false
+    },
+    {
+      "kind": "detail",
+      "section": "2026-06-11",
+      "contentHash": "sha256:88be1c4ecb036b1904ff66d6f84d41800df3653c5257266489c28c24d5b891c7",
+      "text": "프로젝트 A 관련 참고 링크와 결정 사항 정리 (일정 아님, 상세 블록).\n- 결정1: 디자인은 B안\n- 결정2: 마감 6/20"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:dd0072e5e2a85e25fa26091b3c9bc0d5bcfddb559611e1440e62f8432b3bda54",
+      "id": "rec001",
+      "title": "daily",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "recurrence": {
+        "raw": "every day",
+        "rrule": "",
+        "whenDone": false
+      }
+    },
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:83c75a0f81603eec4905dc12a23ad525dcaa8a53c01fd4c2928f92fb63d20a56",
+      "id": "rec002",
+      "title": "weekday",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "recurrence": {
+        "raw": "every weekday",
+        "rrule": "",
+        "whenDone": false
+      }
+    },
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:360b44de5090018c0dc30a0b7d3097d50bf5c5ac72bde8f2610f27037e4cbe69",
+      "id": "rec003",
+      "title": "biweekly",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "recurrence": {
+        "raw": "every 2 weeks",
+        "rrule": "",
+        "whenDone": false
+      }
+    },
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:64ec35686493863bd498256f505c70323f0d0c67612db36603185599e815972e",
+      "id": "rec004",
+      "title": "monthly",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "recurrence": {
+        "raw": "every month on the 15th",
+        "rrule": "",
+        "whenDone": false
+      }
+    },
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:6f38ad70c7b4e6a71707b1cd31d2678dc70967e3afa513b4dcb0b29300741d29",
+      "id": "rec005",
+      "title": "when-done",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "recurrence": {
+        "raw": "every friday when done",
+        "rrule": "",
+        "whenDone": true
+      }
+    }
+  ]
+}

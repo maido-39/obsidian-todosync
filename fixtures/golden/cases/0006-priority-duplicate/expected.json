@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:c5779c9a62e4f20d9e14b119f4d4a319d3392255b2d875c376090828c6d471ed",
+      "id": "pri111",
+      "warnings": [
+        "duplicate priority; last value kept"
+      ],
+      "title": "duplicate priority",
+      "done": false,
+      "component": "VTODO",
+      "priority": "lowest",
+      "tags": []
+    }
+  ]
+}

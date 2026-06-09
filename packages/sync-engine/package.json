@@ -1,0 +1,24 @@
+{
+  "name": "@todomd/sync-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "todomd sync engine — CalDAV client, mapping store, and the .md ⇄ calendar sync cycle.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "dependencies": {
+    "@todomd/core": "workspace:*",
+    "@todomd/shared-types": "workspace:*",
+    "isomorphic-git": "^1.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5"
+  }
+}

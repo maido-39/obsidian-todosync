@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "2026-06-10",
+      "kind": "date"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:61518fafdb5b2d5f42c5dd052a86ee06a3bbc8c307195d8c60901b9755b75b1f",
+      "id": "c0ffee",
+      "title": "timed meeting",
+      "done": false,
+      "component": "VEVENT",
+      "priority": null,
+      "tags": [
+        "#event"
+      ],
+      "due": "2026-06-10T14:00",
+      "dueHasTime": true
+    },
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:17eac199924cd434ba437fbe6ea51ab7a019fd7c7f611959ddb79ebabe6bad7c",
+      "id": "da7e00",
+      "title": "all-day due",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": [],
+      "due": "2026-06-10",
+      "dueHasTime": false
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+# Development toolchain only. The production stack from the spec (§9) —
+# xandikos --webdav-push, ntfy, sync-engine, gitea, reverse proxy — will be
+# added here in a later increment; this `dev` service is the seam it grows from.
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todomd-dev
+    # Run as the image's `node` user (UID/GID 1000), which matches the host
+    # user `syaro` — files written into the bind mount stay host-owned.
+    user: "node"
+    working_dir: /work
+    volumes:
+      - ./:/work
+    environment:
+      # Keep pnpm's content-addressable store inside the repo so it shares a
+      # filesystem with node_modules (hardlinks work) and is host-owned.
+      - npm_config_store_dir=/work/.pnpm-store
+      # Playwright's browsers come from the official image (shot service), so the
+      # npm package must not try to download them during install.
+      - PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+    command: ["bash"]
+
+  # Self-hosted CalDAV server for local integration testing (spec §2.2 / §6).
+  # Brought up on demand by `make itest`; the dev container reaches it by the
+  # service name `xandikos` on the compose network.
+  xandikos:
+    build:
+      context: .
+      dockerfile: docker/xandikos.Dockerfile
+    image: todomd-xandikos
+    command: ["--autocreate", "-d", "/data", "-l", "0.0.0.0", "-p", "8000"]
+    volumes:
+      - xandikos-data:/data
+    ports:
+      - "8000:8000"
+
+  # The sync-engine REST API (§9.1). Run `make build` first, then
+  # `docker compose up -d engine`. Reaches Xandikos by service name.
+  engine:
+    image: todomd-dev
+    user: "node"
+    working_dir: /work
+    command: ["node", "packages/sync-engine/dist/main.js"]
+    volumes:
+      - ./:/work
+    environment:
+      - CALDAV_URL=http://xandikos:8000
+      - CALENDAR_PATH=/user/calendars/personal/
+      - TODOMD_MD=/work/.data/todo.md
+      - TODOMD_STATE=/work/.data/.todomd/state.json
+      - TODOMD_TZ=Asia/Seoul
+      - TODOMD_GIT=1
+      - PORT=8787
+    ports:
+      - "8787:8787"
+    depends_on:
+      - xandikos
+
+  # Web dashboard dev server (Vite), proxying /api to the engine.
+  web:
+    image: todomd-dev
+    user: "node"
+    working_dir: /work/packages/web-dashboard
+    command: ["sh", "-lc", "pnpm dev --host 0.0.0.0 --port 5173"]
+    volumes:
+      - ./:/work
+    environment:
+      - ENGINE_URL=http://engine:8787
+    ports:
+      - "5173:5173"
+    depends_on:
+      - engine
+
+  # Headless-browser screenshotter (Playwright official image has browsers +
+  # system deps baked in). Run on demand: `make shots`.
+  shot:
+    image: mcr.microsoft.com/playwright:v1.49.1-noble
+    working_dir: /work
+    command: ["node", "scripts/shot.mjs"]
+    volumes:
+      - ./:/work
+    environment:
+      - SHOT_URL=http://web:5173
+    depends_on:
+      - web
+
+volumes:
+  xandikos-data:

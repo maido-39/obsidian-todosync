@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "2026-06-10",
+      "kind": "date"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "memo",
+      "section": "2026-06-10",
+      "contentHash": "sha256:b7dfe4bf02a3ac4a23d4ef5e5e58bbc39a7560616f578b65e6617661574e51cf",
+      "id": "memo7",
+      "text": "오늘 회고: 집중이 잘 됐다. 내일은 회의부터."
+    }
+  ]
+}

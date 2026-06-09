@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "project"
+  },
+  "sections": [
+    {
+      "title": "Project Alpha",
+      "kind": "project"
+    },
+    {
+      "title": "Project Beta",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "Project Alpha",
+      "contentHash": "sha256:ba85e494e32fbbc92db50643c1179cf17d9ec9c32a33255288d5b6f0a3ae67b2",
+      "id": "prj001",
+      "title": "design",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    },
+    {
+      "kind": "task",
+      "section": "Project Beta",
+      "contentHash": "sha256:1f97f12a272ed4cec045076597c0ac12960e19468b2c7d40a50b608cf708de14",
+      "id": "prj002",
+      "title": "build",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    }
+  ]
+}

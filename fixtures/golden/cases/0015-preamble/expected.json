@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "2026-06-10",
+      "kind": "date"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "memo",
+      "section": null,
+      "contentHash": "sha256:944f0e467b69344d390b82a115996cbf013c7573a8eb98ddb32947cde0ba7e4a",
+      "text": "intro paragraph before any heading"
+    },
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:110b024dc95683bcada75f9a750cf73657a80c9991abc17a8a17ec2cdc41ab47",
+      "id": "pre001",
+      "title": "task after preamble",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    }
+  ]
+}

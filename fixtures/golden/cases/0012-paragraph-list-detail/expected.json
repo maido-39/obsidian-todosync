@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "detail",
+      "section": "P",
+      "contentHash": "sha256:88be1c4ecb036b1904ff66d6f84d41800df3653c5257266489c28c24d5b891c7",
+      "text": "프로젝트 A 관련 참고 링크와 결정 사항 정리 (일정 아님, 상세 블록).\n- 결정1: 디자인은 B안\n- 결정2: 마감 6/20"
+    }
+  ]
+}

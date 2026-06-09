@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "name": "0001-empty",
+      "sections": 0,
+      "blocks": 0,
+      "roundTripExact": true
+    },
+    {
+      "name": "0002-frontmatter-only",
+      "sections": 0,
+      "blocks": 0,
+      "roundTripExact": true
+    },
+    {
+      "name": "0003-basic-tasks",
+      "sections": 1,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0004-due-datetime",
+      "sections": 1,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0005-all-date-signifiers",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0006-priority-duplicate",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0007-recurrence-variants",
+      "sections": 1,
+      "blocks": 5,
+      "roundTripExact": true
+    },
+    {
+      "name": "0008-recurrence-greedy-stop",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0009-tags-mentions",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0010-in-title-emoji",
+      "sections": 1,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0011-blockquote-memo",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0012-paragraph-list-detail",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0013-multi-section",
+      "sections": 2,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0014-project-strategy",
+      "sections": 2,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0015-preamble",
+      "sections": 1,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0016-mid-body-hr",
+      "sections": 1,
+      "blocks": 3,
+      "roundTripExact": true
+    },
+    {
+      "name": "0017-subtasks",
+      "sections": 1,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0018-code-fence-detail",
+      "sections": 1,
+      "blocks": 2,
+      "roundTripExact": true
+    },
+    {
+      "name": "0019-empty-section",
+      "sections": 2,
+      "blocks": 1,
+      "roundTripExact": true
+    },
+    {
+      "name": "0020-spec-example",
+      "sections": 2,
+      "blocks": 5,
+      "roundTripExact": true
+    }
+  ]
+}

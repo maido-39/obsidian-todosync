@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "memo",
+      "section": "P",
+      "contentHash": "sha256:0f60e794cf32062091136c86d96ebd7ed7c00dc4c80498d00b27c80f8e3b477b",
+      "text": "before the rule"
+    },
+    {
+      "kind": "detail",
+      "section": "P",
+      "contentHash": "sha256:cb3f91d54eee30e53e35b2b99905f70f169ed549fd78909d3dac2defc9ed8d3b",
+      "text": "---"
+    },
+    {
+      "kind": "memo",
+      "section": "P",
+      "contentHash": "sha256:0641061e4aa1320dd48ab60de120067c3edb0c7429b8fa4a8e6d03accacc3912",
+      "text": "after the rule"
+    }
+  ]
+}

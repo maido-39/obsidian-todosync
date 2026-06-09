@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "Empty Section",
+      "kind": "project"
+    },
+    {
+      "title": "Next Section",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "Next Section",
+      "contentHash": "sha256:2eacd9e485af76b0b5acae23b280bc3a156e4adb9afd6f133b60476db75a34f2",
+      "id": "emp001",
+      "title": "only task",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    }
+  ]
+}

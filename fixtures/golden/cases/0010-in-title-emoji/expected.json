@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "P",
+      "kind": "project"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:37a9993bcb8bca1da300b13654ae83df30cd0e3102695063dd4f033afb76c5e2",
+      "warnings": [
+        "dangling 📅"
+      ],
+      "title": "🎉 파티 계획 📅",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    },
+    {
+      "kind": "task",
+      "section": "P",
+      "contentHash": "sha256:0ed2e1e3e55ab7fa8541752328eeee30f927e087f37db7feceb9195f229adf13",
+      "title": "bare ^x not an id",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "frontmatter": {
+    "todomd_version": 1,
+    "timezone": "UTC",
+    "default_calendar": "personal",
+    "section_strategy": "date"
+  },
+  "sections": [
+    {
+      "title": "2026-06-10",
+      "kind": "date"
+    },
+    {
+      "title": "2026-06-11",
+      "kind": "date"
+    }
+  ],
+  "blocks": [
+    {
+      "kind": "task",
+      "section": "2026-06-10",
+      "contentHash": "sha256:da837820b3a7dde9c9240702e7e8a4f39499b8b842ec4ede8a7576fcb4682fc6",
+      "id": "sec001",
+      "title": "morning",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    },
+    {
+      "kind": "task",
+      "section": "2026-06-11",
+      "contentHash": "sha256:d05d21dea5e220478e740c4ef4b234d1ec2682d6d8ff00445862d0827d325b41",
+      "id": "sec002",
+      "title": "tomorrow",
+      "done": false,
+      "component": "VTODO",
+      "priority": null,
+      "tags": []
+    }
+  ]
+}

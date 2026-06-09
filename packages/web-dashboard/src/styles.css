@@ -1,0 +1,269 @@
+:root {
+  --bg: #f7f7f8;
+  --card: #ffffff;
+  --line: #e3e3e8;
+  --text: #1d1d1f;
+  --muted: #6b6b73;
+  --accent: #2563eb;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --event: #7c3aed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topbar h1 {
+  font-size: 22px;
+  margin: 8px 0;
+}
+
+.syncbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover {
+  border-color: var(--accent);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef0f4;
+  color: var(--muted);
+}
+.badge-ok {
+  background: #e7f6ec;
+  color: var(--ok);
+}
+.badge-warn {
+  background: #fdf0db;
+  color: var(--warn);
+}
+.badge-date {
+  background: #e8efff;
+  color: var(--accent);
+}
+.badge-prio {
+  background: #fce8ef;
+  color: #be185d;
+}
+.badge-rec {
+  background: #efe9fb;
+  color: var(--event);
+}
+
+.pill {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 6px;
+}
+.pill-event {
+  background: #f1ecfd;
+  color: var(--event);
+}
+.pill-todo {
+  background: #eef0f4;
+  color: var(--muted);
+}
+
+.error {
+  background: #fdecec;
+  color: #b91c1c;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.addform {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.addform .grow {
+  flex: 1 1 200px;
+}
+.addform input,
+.addform select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  background: var(--card);
+}
+
+.tasklist section {
+  margin-bottom: 18px;
+}
+.tasklist h2 {
+  font-size: 14px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+  margin: 0 0 8px;
+}
+.tasklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+}
+.task .title {
+  flex: 0 1 auto;
+}
+.task.is-done .title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.task .title {
+  cursor: text;
+}
+.title-edit {
+  flex: 1 1 auto;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+.task .del {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 2px 6px;
+  font-size: 13px;
+}
+.task .del:hover {
+  border: none;
+  color: #b91c1c;
+}
+
+.empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 40px 0;
+}
+
+.conflicts {
+  background: #fff8ec;
+  border: 1px solid #f3dca6;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.conflicts h2 {
+  font-size: 15px;
+  margin: 4px 0 12px;
+  color: var(--warn);
+}
+.conflict-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.conflict-side {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+.conflict-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.conflict-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.quickadd {
+  margin: 16px 0;
+}
+.preview {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+}
+.preview-warn {
+  border-left-color: var(--warn);
+}
+.preview-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.preview-hint {
+  color: var(--warn);
+  font-size: 13px;
+  margin: 6px 0;
+}
+.preview-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}

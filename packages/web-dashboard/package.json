@@ -1,0 +1,21 @@
+{
+  "name": "@todomd/web-dashboard",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser dashboard — view/edit tasks and resolve conflicts via the sync-engine REST API.",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "preact": "^10.25.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.1",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.11"
+  }
+}

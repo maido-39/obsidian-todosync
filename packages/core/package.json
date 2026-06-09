@@ -1,0 +1,27 @@
+{
+  "name": "@todomd/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "todomd canonical-format parser & serializer (the SSOT round-trip core).",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "dependencies": {
+    "@todomd/shared-types": "workspace:*",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "rrule": "^2.8.1",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^22.10.5"
+  }
+}
