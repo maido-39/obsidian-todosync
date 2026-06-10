@@ -10,3 +10,7 @@ dist/
 /.todomd/
 /.data/
 /screenshots/
+
+# Obsidian plugin build output (built by `make plugin`)
+/packages/obsidian-plugin/main.js
+/packages/obsidian-plugin/main.js.map

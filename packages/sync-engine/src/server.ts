@@ -7,6 +7,7 @@ import {
   deleteTask,
   parseDocument,
   parseNaturalLanguage,
+  parseTaskLine,
   serializeDocument,
   updateTask,
   type ICalOptions,
@@ -145,6 +146,48 @@ export function createApp(config: EngineConfig): Server {
       return sendJson(res, 201, { task: created ? taskDTO(created as TaskBlock) : null });
     }
 
+    // Bulk upsert of dated tasks scanned from an Obsidian vault. Each task is
+    // keyed by its `^id` (the plugin stamps every note line), so this is
+    // idempotent: known id → update in place, new id → add under its date
+    // heading (adopting the vault's id). One-way for now: it never deletes, so
+    // a task removed from a note leaves its calendar event untouched. Run /sync
+    // afterwards to push to CalDAV.
+    if (method === 'POST' && path === '/vault/sync') {
+      const body = (await readBody(req)) as {
+        tasks?: { id?: string; raw?: string; note?: string }[];
+      };
+      const incoming = Array.isArray(body?.tasks) ? body.tasks : [];
+      let doc = assignMissingIds(parseDocument(readMd())).doc;
+      const ids = new Set<string>();
+      for (const b of doc.blocks) if (b.kind === 'task' && b.id) ids.add(b.id);
+      let added = 0;
+      let updated = 0;
+      let skipped = 0;
+      for (const vt of incoming) {
+        const input = vt.raw ? vaultLineToInput(vt.raw) : null;
+        if (!input || !vt.id) {
+          skipped += 1;
+          continue;
+        }
+        if (ids.has(vt.id)) {
+          const next = updateTask(doc, vt.id, input);
+          if (next) {
+            doc = next;
+            updated += 1;
+          } else skipped += 1;
+        } else {
+          const { doc: withTask, block } = addTask(doc, input);
+          block.id = vt.id; // adopt the vault's ^id as the stable cross-surface key
+          ids.add(vt.id);
+          doc = withTask;
+          added += 1;
+        }
+      }
+      writeMd(serializeDocument(doc));
+      await commit('vault sync');
+      return sendJson(res, 200, { added, updated, skipped });
+    }
+
     const taskId = matchParam(path, /^\/tasks\/([^/]+)$/);
     if (method === 'PATCH' && taskId) {
       const patch = (await readBody(req)) as Partial<TaskInput>;
@@ -189,6 +232,36 @@ export function createApp(config: EngineConfig): Server {
       sendJson(res, 500, { error: err instanceof Error ? err.message : String(err) });
     });
   });
+}
+
+/**
+ * Parse one raw vault task line (`- [ ] title 📅 … ^id`) into a TaskInput, using
+ * the same tokenizer as the document parser so the format is identical. Returns
+ * null for non-task lines and for tasks with no date (only dated tasks become
+ * calendar entries). The task is filed under its date heading (due ▸ scheduled ▸
+ * start) to match the engine's section grouping.
+ */
+export function vaultLineToInput(raw: string): TaskInput | null {
+  const m = /^\s*[-*]\s+\[([ xX])\]\s+(.*)$/.exec(raw);
+  if (!m) return null;
+  const parsed = parseTaskLine((m[2] ?? '').trim());
+  const date = parsed.due ?? parsed.scheduled ?? parsed.start;
+  if (!date) return null;
+  const input: TaskInput = {
+    title: parsed.title,
+    done: (m[1] ?? ' ') !== ' ',
+    section: date.slice(0, 10),
+    tags: parsed.tags,
+    priority: parsed.priority,
+  };
+  if (parsed.due !== undefined) {
+    input.due = parsed.due;
+    input.dueHasTime = parsed.dueHasTime ?? false;
+  }
+  if (parsed.scheduled !== undefined) input.scheduled = parsed.scheduled;
+  if (parsed.start !== undefined) input.start = parsed.start;
+  if (parsed.recurrence?.raw) input.recurrence = parsed.recurrence.raw;
+  return input;
 }
 
 // --- helpers ---------------------------------------------------------------

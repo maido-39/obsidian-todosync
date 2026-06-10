@@ -5,7 +5,7 @@ RUN := $(DC) run --rm dev
 
 .DEFAULT_GOAL := help
 
-.PHONY: help image install build test test-watch golden itest up down web web-build shots shell clean
+.PHONY: help image install build test test-watch golden itest up down web web-build shots plugin plugin-install shell clean
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
@@ -54,6 +54,16 @@ web: ## Run the web dashboard + backend (browse http://localhost:5173)
 	$(DC) up -d --build xandikos engine
 	@for i in $$(seq 1 30); do curl -sf http://localhost:8000/ >/dev/null 2>&1 && break; sleep 1; done
 	$(DC) run --rm -p 5173:5173 dev sh -lc 'cd packages/web-dashboard && pnpm dev --host 0.0.0.0'
+
+plugin: ## Build the Obsidian plugin bundle (→ packages/obsidian-plugin/main.js)
+	$(RUN) sh -lc 'cd packages/obsidian-plugin && pnpm build'
+
+plugin-install: ## Copy the built plugin into a vault: make plugin-install VAULT=/path/to/vault
+	@test -n "$(VAULT)" || { echo "usage: make plugin-install VAULT=/path/to/your/vault"; exit 1; }
+	@test -f packages/obsidian-plugin/main.js || { echo "build it first: make plugin"; exit 1; }
+	mkdir -p "$(VAULT)/.obsidian/plugins/todomd-calendar"
+	cp packages/obsidian-plugin/main.js packages/obsidian-plugin/manifest.json packages/obsidian-plugin/styles.css "$(VAULT)/.obsidian/plugins/todomd-calendar/"
+	@echo "installed → $(VAULT)/.obsidian/plugins/todomd-calendar/  (enable in Obsidian: Settings → Community plugins)"
 
 shots: ## Capture dashboard screenshots into ./screenshots (Playwright)
 	$(DC) up -d --build xandikos engine web

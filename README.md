@@ -59,6 +59,22 @@ Pull a model once: `docker compose exec ollama ollama pull exaone3.5:2.4b`. On C
 first request after ~15 min idle pays a one-time model load; subsequent quick-adds run
 in ~10 s. Leave `TODOMD_LLM` unset to stay rules-only (fully offline, instant).
 
+## Obsidian plugin
+
+The `todomd-calendar` plugin ([`packages/obsidian-plugin/`](packages/obsidian-plugin/))
+turns **dated tasks in any note** into calendar events. Write a task with an
+Obsidian-Tasks date signifier anywhere in your vault —
+
+```md
+- [ ] 치과 예약 📅 2026-06-20 14:00
+```
+
+— and the plugin scans the vault, stamps each task with a stable block id
+(`^a1b2c3`), and POSTs them to the engine's `/vault/sync`, which then syncs to
+CalDAV. One-way for now (Obsidian → calendar). Build with `make plugin`, install
+into a vault with `make plugin-install VAULT=/path/to/vault`. See the
+[plugin README](packages/obsidian-plugin/README.md).
+
 ## Layout
 
 ```
@@ -67,6 +83,7 @@ packages/
   core/           # parser + serializer + rrule/mapper/differ/nlp (SSOT round-trip core)
   sync-engine/    # CalDAV client, bidirectional sync, REST API, git versioning, LLM fallback
   web-dashboard/  # Vite + Preact dashboard (quick-add, task list, sync, conflicts)
+  obsidian-plugin/# Obsidian plugin: register dated note tasks → engine → CalDAV
 fixtures/golden/  # language-neutral corpus: input.md + expected.json + roundtrip.md
                   # (shared by the TS core and the future Kotlin port)
 ```

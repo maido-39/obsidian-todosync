@@ -1,0 +1,10 @@
+{
+  "id": "todomd-calendar",
+  "name": "todomd Calendar Sync",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Register dated tasks from your notes to the todomd engine and sync them to CalDAV (e.g. Samsung Calendar).",
+  "author": "todomd",
+  "authorUrl": "https://github.com/maido-39/obsidian-todosync",
+  "isDesktopOnly": false
+}
