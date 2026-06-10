@@ -23,3 +23,4 @@ export { pushToCalDav, type PushOptions, type PushResult } from './sync.js';
 export { syncBidirectional, type SyncOptions, type SyncResult } from './bidirectional.js';
 export { createApp, type EngineConfig } from './server.js';
 export { commitSnapshot, history, ensureRepo, type CommitInfo } from './gitVersion.js';
+export { combineLLM, llmParse, type LLMConfig } from './llm.js';

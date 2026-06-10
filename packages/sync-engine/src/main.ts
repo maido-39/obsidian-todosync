@@ -13,6 +13,14 @@ const config: EngineConfig = {
   ical: { timezone: process.env.TODOMD_TZ ?? 'UTC' },
   ...(process.env.TODOMD_TOKEN ? { token: process.env.TODOMD_TOKEN } : {}),
   ...(process.env.TODOMD_GIT === '1' ? { git: true } : {}),
+  ...(process.env.TODOMD_LLM === '1'
+    ? {
+        llm: {
+          url: process.env.OLLAMA_URL ?? 'http://ollama:11434',
+          model: process.env.OLLAMA_MODEL ?? 'exaone3.5:2.4b',
+        },
+      }
+    : {}),
 };
 
 const port = Number(process.env.PORT ?? 8787);

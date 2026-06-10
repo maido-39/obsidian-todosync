@@ -52,11 +52,17 @@ services:
       - TODOMD_STATE=/work/.data/.todomd/state.json
       - TODOMD_TZ=Asia/Seoul
       - TODOMD_GIT=1
+      # Natural-language fallback via the local LLM (only used when the rule
+      # parser is not confident). Disable by setting TODOMD_LLM=0.
+      - TODOMD_LLM=1
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=exaone3.5:2.4b
       - PORT=8787
     ports:
       - "0.0.0.0:8787:8787"
     depends_on:
       - xandikos
+      - ollama
 
   # Web dashboard dev server (Vite), proxying /api to the engine.
   web:
@@ -86,5 +92,16 @@ services:
     depends_on:
       - web
 
+  # Local LLM runtime (CPU) for natural-language quick-add fallback. Optional —
+  # the engine only calls it when TODOMD_LLM is configured. Models live in the
+  # ollama-data volume.
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - "0.0.0.0:11434:11434"
+
 volumes:
   xandikos-data:
+  ollama-data:

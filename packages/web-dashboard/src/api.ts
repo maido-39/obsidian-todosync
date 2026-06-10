@@ -84,7 +84,11 @@ export const api = {
     const qs = q.toString();
     return request<{ tasks: TaskDTO[] }>(`/tasks${qs ? `?${qs}` : ''}`);
   },
-  parse: (text: string) => request<{ preview: ParsePreview }>('/parse', jsonInit('POST', { text })),
+  parse: (text: string) =>
+    request<{ preview: ParsePreview; engine?: 'rules' | 'llm' }>(
+      '/parse',
+      jsonInit('POST', { text }),
+    ),
   addTask: (input: NewTask) => request<{ task: TaskDTO }>('/tasks', jsonInit('POST', input)),
   updateTask: (id: string, patch: Partial<NewTask> & { done?: boolean }) =>
     request<{ task: TaskDTO }>(`/tasks/${encodeURIComponent(id)}`, jsonInit('PATCH', patch)),

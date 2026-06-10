@@ -98,10 +98,12 @@ button:disabled {
 }
 
 .pill {
-  margin-left: auto;
   font-size: 11px;
   padding: 1px 8px;
   border-radius: 6px;
+}
+.preview-row strong {
+  margin-right: auto;
 }
 .pill-event {
   background: #f1ecfd;
@@ -110,6 +112,11 @@ button:disabled {
 .pill-todo {
   background: #eef0f4;
   color: var(--muted);
+}
+.pill-ai {
+  background: #e7f5ee;
+  color: #047857;
+  font-weight: 600;
 }
 
 .error {

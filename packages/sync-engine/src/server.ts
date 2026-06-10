@@ -16,7 +16,18 @@ import type { Conflict, TaskBlock } from '@todomd/shared-types';
 import { syncBidirectional } from './bidirectional.js';
 import type { CalDavConfig } from './caldav.js';
 import { commitSnapshot, history } from './gitVersion.js';
+import { llmParse, type LLMConfig } from './llm.js';
 import { loadState, saveState } from './state.js';
+
+/**
+ * Date/time hint vocabulary the LLM fallback watches for. When the rule parser
+ * extracts no anchor (no due/recurrence) but the text matches one of these, the
+ * text likely carries a date the rules couldn't parse (colloquial/typo forms),
+ * so we let the LLM try. Deliberately omits bare 초/말/달 (false positives like
+ * 초안/말일/달력) — those only count in compound forms like 월말/다음 달.
+ */
+const DATE_HINT =
+  /(내일|모레|글피|어제|낼|담주|담달|다다음|다음\s*주|다음\s*달|이번\s*주|이번\s*달|주말|[월화수목금토일]요일|[월화수목금토일]욜|월말|월초|말일|매일|매주|매월|평일|격주|오전|오후|새벽|아침|점심|저녁|밤|정오|자정|\d+\s*시|\d+\s*[일주달]\s*(?:뒤|후)|\d+\s*개월)/;
 
 /**
  * The sync-engine's single-user REST surface (§9.1) on Node's built-in http —
@@ -33,6 +44,8 @@ export interface EngineConfig {
   token?: string;
   /** Commit the .md (+ state) to git on each change (§5.2). */
   git?: boolean;
+  /** Local-LLM fallback for /parse when the rule parser is not confident (§3.5). */
+  llm?: LLMConfig;
 }
 
 export function createApp(config: EngineConfig): Server {
@@ -96,7 +109,21 @@ export function createApp(config: EngineConfig): Server {
       const body = (await readBody(req)) as { text?: string; today?: string };
       if (!body?.text) return sendJson(res, 400, { error: 'text is required' });
       const today = body.today ?? new Date().toISOString().slice(0, 10);
-      return sendJson(res, 200, { preview: parseNaturalLanguage(body.text, today) });
+      // Rules first (fast, offline). Fall back to the local LLM (§3.5) when the
+      // rule parser is ambiguous, OR when it found no anchor at all yet the text
+      // clearly mentions a date/time it failed to parse (colloquial/typo forms
+      // like "담주 화욜", "월말"). Only adopt the LLM result if it actually adds
+      // an anchor (or rules were unsure) — never degrade a confident plain task.
+      const ruleResult = parseNaturalLanguage(body.text, today);
+      let preview = ruleResult;
+      const noAnchor = !ruleResult.due && !ruleResult.recurrence;
+      if (config.llm && (!ruleResult.confident || (noAnchor && DATE_HINT.test(body.text)))) {
+        const llmResult = await llmParse(body.text, today, config.llm);
+        if (llmResult && (llmResult.due || llmResult.recurrence || !ruleResult.confident)) {
+          preview = llmResult;
+        }
+      }
+      return sendJson(res, 200, { preview, engine: preview === ruleResult ? 'rules' : 'llm' });
     }
 
     if (method === 'GET' && path === '/tasks') {

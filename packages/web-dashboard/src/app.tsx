@@ -166,6 +166,7 @@ function ConflictSide(props: { label: string; task: TaskDTO | null; onPick: () =
 function QuickAdd(props: { onAdd: (input: NewTask) => Promise<void> }) {
   const [text, setText] = useState('');
   const [preview, setPreview] = useState<ParsePreview | null>(null);
+  const [engine, setEngine] = useState<'rules' | 'llm' | undefined>(undefined);
   const [busy, setBusy] = useState(false);
 
   const doParse = async (e: Event) => {
@@ -173,7 +174,9 @@ function QuickAdd(props: { onAdd: (input: NewTask) => Promise<void> }) {
     if (!text.trim()) return;
     setBusy(true);
     try {
-      setPreview((await api.parse(text.trim())).preview);
+      const res = await api.parse(text.trim());
+      setPreview(res.preview);
+      setEngine(res.engine);
     } finally {
       setBusy(false);
     }
@@ -201,13 +204,14 @@ function QuickAdd(props: { onAdd: (input: NewTask) => Promise<void> }) {
           onInput={(e) => setText((e.target as HTMLInputElement).value)}
         />
         <button type="submit" disabled={busy}>
-          해석
+          {busy ? '해석 중…' : '해석'}
         </button>
       </form>
       {preview && (
         <div class={`preview ${preview.confident ? '' : 'preview-warn'}`}>
           <div class="preview-row">
             <strong>{preview.title || '(제목 없음)'}</strong>
+            {engine === 'llm' && <span class="pill pill-ai">AI 해석</span>}
             <span class={`pill ${preview.component === 'VEVENT' ? 'pill-event' : 'pill-todo'}`}>
               {preview.component === 'VEVENT' ? '일정' : '할일'}
             </span>
